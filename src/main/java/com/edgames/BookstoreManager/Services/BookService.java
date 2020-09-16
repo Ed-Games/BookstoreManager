@@ -1,5 +1,6 @@
 package com.edgames.BookstoreManager.Services;
 
+import com.edgames.BookstoreManager.dto.BookDTO;
 import com.edgames.BookstoreManager.dto.MessageResponseDTO;
 import com.edgames.BookstoreManager.entity.Book;
 import com.edgames.BookstoreManager.repository.BookstoreRepository;
@@ -16,8 +17,14 @@ public class BookService {
         this.bookstoreRepository = bookstoreRepository;
     }
 
-    public MessageResponseDTO create(Book book){
-        Book savedBook =  bookstoreRepository.save(book);
+    public MessageResponseDTO create(BookDTO bookDTO){
+        Book bookToSave = Book.builder()
+                .name(bookDTO.getName())
+                .pages(bookDTO.getPages())
+                .chapters(bookDTO.getChapters())
+                .author(bookDTO.getAuthor())
+                .build();
+        Book savedBook =  bookstoreRepository.save(bookToSave);
         return MessageResponseDTO.builder().message("Book created with Id " +savedBook.getId()).build();
     }
 }
